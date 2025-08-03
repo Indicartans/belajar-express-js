@@ -1,23 +1,49 @@
 import express from "express";
+import expressEjsLayouts from "express-ejs-layouts";
 
 const app = express();
 const port = 3000;
 
+// gunakan ejs
+app.set("view engine", "ejs");
+app.use(expressEjsLayouts);
+
 app.get("/", (req, res) => {
-  res.send("halo");
+  const mahasiswa = [
+    {
+      nama: "Alfa Indica",
+      email: "alfaindica@gmail.com",
+    },
+    {
+      nama: "erik",
+      email: "erik@gmail.com",
+    },
+    {
+      nama: "owi",
+      email: "owi@gmail.com",
+    },
+  ];
+
+  res.render("index", {
+    nama: "Alfa Indica",
+    title: "Halaman Home",
+    mahasiswa,
+    layout: "layouts/main-layout",
+  });
 });
 
-// query string
-app.get("/product", (req, res) => {
-  const { id, idCategory } = req.query;
-
-  res.send(`id: ${id} <br> idCategory: ${idCategory}`);
+app.get("/about", (req, res) => {
+  res.render("about", {
+    title: "Halaman About",
+    layout: "layouts/main-layout",
+  });
 });
 
-// params url
-app.get("/checkout/:idCart", (req, res) => {
-  const { idCart } = req.params;
-  res.send(`idCart: ${idCart}`);    
+app.get("/contact", (req, res) => {
+  res.render("contact", {
+    title: "Halaman Contact",
+    layout: "layouts/main-layout",
+  });
 });
 
 app.use("/", (req, res) => {
