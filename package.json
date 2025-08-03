@@ -5,10 +5,11 @@
   "main": "./src/index.js",
   "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start-dev": "nodemon ./src/app.js"
   },
   "jest": {
-    "maxConcurrency" : 2,
+    "maxConcurrency": 2,
     "verbose": true,
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
