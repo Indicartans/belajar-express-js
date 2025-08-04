@@ -1,6 +1,6 @@
 import express from "express";
 import expressEjsLayouts from "express-ejs-layouts";
-import morgan from "morgan";
+import { loadContact, findContact } from "../utils/contacts.js";
 
 const app = express();
 const port = 3000;
@@ -10,16 +10,9 @@ app.set("view engine", "ejs");
 
 // third party middleware
 app.use(expressEjsLayouts);
-app.use(morgan(process.env.NODE_ENV == "production" ? "tiny" : "dev"));
 
 // built in middleware
 app.use(express.static("public"));
-
-// application level middleware
-app.use((req, res, next) => {
-  console.log("Time: ", Date.now());
-  next();
-});
 
 app.get("/", (req, res) => {
   const mahasiswa = [
@@ -53,9 +46,22 @@ app.get("/about", (req, res) => {
 });
 
 app.get("/contact", (req, res) => {
+  const contacts = loadContact();
+
   res.render("contact", {
     title: "Halaman Contact",
     layout: "layouts/main-layout",
+    contacts: contacts,
+  });
+});
+
+app.get("/contact/:nama", (req, res) => {
+  const contact = findContact(req.params.nama);
+
+  res.render("detail-contact", {
+    title: "Halaman Detail Contact",
+    layout: "layouts/main-layout",
+    contact: contact,
   });
 });
 

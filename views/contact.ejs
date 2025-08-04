@@ -1,1 +1,42 @@
-<h1>ini adalah halaman contact</h1>
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-md-8">
+      <h2>Daftar Contact</h2>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">Nama</th>
+            <th scope="col">No Telp</th>
+            <th scope="col">Email</th>
+            <th scope="col">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (contacts.length === 0) { %>
+          <tr>
+            <td colspan="5" class="text-danger text-center fw-semibold">
+              Tidak Ada Data.
+            </td>
+          </tr>
+          <% } %> <% contacts.forEach((contact, index) => { %>
+          <tr>
+            <th><%= index + 1 %></th>
+            <td><%= contact.nama %></td>
+            <td><%= contact.noTelp %></td>
+            <td><%= contact.email %></td>
+            <td>
+              <a
+                href="/contact/<%= contact.nama %>"
+                class="btn btn-primary badge"
+                ><i class="bi bi-info-circle"></i> Details</a
+              >
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
