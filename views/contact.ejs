@@ -3,6 +3,19 @@
     <div class="col-md-8">
       <h2>Daftar Contact</h2>
 
+      <a href="/contact/add" class="btn btn-success">Tambah Contact</a>
+
+      <% if (msg.length !== 0) { %>
+      <div class="alert alert-success mt-3 alert-dismissible fade show" role="alert">
+        <%= msg %>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      <% } %>
       <table class="table">
         <thead>
           <tr>

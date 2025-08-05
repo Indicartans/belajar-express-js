@@ -27,3 +27,22 @@ export const findContact = (nama) => {
 
   return contact;
 };
+
+// replace data contacts
+const saveContacts = (contacts) => {
+  fs.writeFileSync("data/contacts.json", JSON.stringify(contacts));
+};
+
+// add new contact
+export const addContact = (contact) => {
+  const contacts = loadContact();
+  contacts.push(contact);
+  saveContacts(contacts);
+};
+
+// check duplicate
+export const checkDuplicate = (nama) => {
+  const contacts = loadContact();
+
+  return contacts.find((contact) => contact.nama == nama);
+};
