@@ -46,3 +46,24 @@ export const checkDuplicate = (nama) => {
 
   return contacts.find((contact) => contact.nama == nama);
 };
+
+export const deleteContact = (nama) => {
+  const contacts = loadContact();
+  const filteredContacts = contacts.filter((contact) => contact.nama !== nama);
+
+  saveContacts(filteredContacts);
+};
+
+export const updateContacts = (newContacts) => {
+  const contacts = loadContact();
+  // hilangkan contact lama yg ingin diedit
+  const filteredContacts = contacts.filter(
+    (contact) => contact.nama !== newContacts.oldName
+  );
+
+  // hapus oldname
+  delete newContacts.oldName;
+  // masukkan contact baru ke data
+  filteredContacts.push(newContacts);
+  saveContacts(filteredContacts);
+};

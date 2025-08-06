@@ -5,6 +5,8 @@ import {
   findContact,
   addContact,
   checkDuplicate,
+  deleteContact,
+  updateContacts,
 } from "../utils/contacts.js";
 import { body, check, validationResult } from "express-validator";
 import session from "express-session";
@@ -115,6 +117,70 @@ app.post(
       addContact(req.body);
       req.flash("msg", "Data berhasil ditambahkan!");
 
+      res.redirect("/contact");
+    }
+  }
+);
+
+// prosess delete contact
+app.get("/contact/delete/:nama", (req, res) => {
+  const contact = findContact(req.params.nama);
+
+  if (!contact) {
+    res.status(404).send("Not Found");
+  } else {
+    deleteContact(req.params.nama);
+
+    req.flash("msg", "Contact berhasil dihapus");
+    res.redirect("/contact");
+  }
+});
+
+app.get("/contact/edit/:nama", (req, res) => {
+  const contact = findContact(req.params.nama);
+
+  if (!contact) {
+    req.flash("msg", "Contact tidak ditemukan");
+    res.redirect("/contact");
+  } else {
+    res.render("edit-contact", {
+      title: "Form edit contact",
+      layout: "layouts/main-layout",
+      contact,
+    });
+  }
+});
+
+// process update data
+app.post(
+  "/contact/update",
+  [
+    body("nama").custom((value, { req }) => {
+      const duplicate = checkDuplicate(value);
+
+      if (value !== req.body.oldName && duplicate) {
+        throw new Error("Nama sudah terdaftar");
+      }
+
+      return true;
+    }),
+    check("email", "Email tidak valid").isEmail(),
+    check("noTelp", "Nomor telepon tidak valid").isMobilePhone("id-ID"),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // return res.status(400).json({ errors: errors.array() });
+      res.render("edit-contact", {
+        title: "Form Edit Contact",
+        layout: "layouts/main-layout",
+        errors: errors.array(),
+        contact: req.body,
+      });
+    } else {
+      updateContacts(req.body);
+      req.flash("msg", "Data berhasil diupdate!");
       res.redirect("/contact");
     }
   }

@@ -14,7 +14,9 @@
             <%= contact.noTelp %>
           </h6>
           <p class="card-text"><%= contact.email %></p>
-          <a href="/contact" class="card-link"
+          <a href="/contact/edit/<%= contact.nama %>" class="btn btn-info">Edit</a>
+          <a href="/contact/delete/<%= contact.nama %>" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus <%= contact.nama %>?')">Hapus</a>
+          <a href="/contact" class="card-link d-block mt-3"
             >&laquo; Kembali ke daftar contacts</a
           >
         </div>
